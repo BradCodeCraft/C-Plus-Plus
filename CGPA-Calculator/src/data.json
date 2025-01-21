@@ -1,0 +1,29 @@
+{
+  "courses": [
+    {
+      "credit": 3,
+      "gpa": 4.0,
+      "name": "BUS-S 302"
+    },
+    {
+      "credit": 4,
+      "gpa": 4.0,
+      "name": "CSCI-C 343"
+    },
+    {
+      "credit": 3,
+      "gpa": 4.0,
+      "name": "BUS-S 308"
+    },
+    {
+      "credit": 3,
+      "gpa": 3.7,
+      "name": "BUS-S 305"
+    },
+    {
+      "credit": 3,
+      "gpa": 4.0,
+      "name": "MUS-L 122"
+    }
+  ]
+}
