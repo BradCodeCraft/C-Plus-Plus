@@ -1,0 +1,26 @@
+{
+  "brnguye": {
+    "accountName": "Brad Nguyen",
+    "accountType": "USER",
+    "loginPassphrase": "Brnguye1225!",
+    "loginUsername": "brnguye"
+  },
+  "testadmin": {
+    "accountName": "Test Admin",
+    "accountType": "ADMIN",
+    "loginPassphrase": "Admin123!",
+    "loginUsername": "testadmin"
+  },
+  "testuser": {
+    "accountName": "Test User",
+    "accountType": "USER",
+    "loginPassphrase": "User123!",
+    "loginUsername": "testuser"
+  },
+  "tstrantz": {
+    "accountName": "Tyler Strantz",
+    "accountType": "USER",
+    "loginPassphrase": "Tstrantz123!",
+    "loginUsername": "tstrantz"
+  }
+}
