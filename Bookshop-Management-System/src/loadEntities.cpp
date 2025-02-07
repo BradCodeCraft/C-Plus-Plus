@@ -13,7 +13,7 @@ void loadBookEntity() {
 
   Book b;
   bool isValidOption;
-  std::string userInputChoice;
+  int userInputChoice;
 
   std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
             << std::string(20, ' ') << "|\n\n";
@@ -31,7 +31,7 @@ void loadBookEntity() {
   std::cout << "Choice: ";
   std::cin >> userInputChoice;
 
-  switch (std::stoi(userInputChoice)) {
+  switch (userInputChoice) {
   case 1:
     b.createBook();
     break;
@@ -45,6 +45,7 @@ void loadBookEntity() {
     b.updateAllBooks();
     break;
   case 5:
+    b.updateBook();
     break;
   case 6:
     break;
@@ -61,10 +62,9 @@ void loadBookEntity() {
       std::cout << "Invalid Option! Try again: ";
       std::cin >> userInputChoice;
 
-      isValidOption =
-          std::stoi(userInputChoice) >= 1 && std::stoi(userInputChoice) <= 8;
+      isValidOption = userInputChoice >= 1 && userInputChoice <= 8;
     }
-    switch (std::stoi(userInputChoice)) {
+    switch (userInputChoice) {
     case 1:
       b.createBook();
       break;
@@ -78,6 +78,7 @@ void loadBookEntity() {
       b.updateAllBooks();
       break;
     case 5:
+      b.updateBook();
       break;
     case 6:
       break;

@@ -137,12 +137,13 @@ void Book::readBook() {
       std::cout << "Search: ";
       std::getline(std::cin, userInputSearch);
 
-      results = tx.exec(
-          "SELECT * FROM books WHERE CAST(book_id AS TEXT) LIKE '%" +
-          userInputSearch + "%' OR book_name LIKE '%" + userInputSearch +
-          "%' OR book_author LIKE '%" + userInputSearch +
-          "%' OR CAST(book_price AS TEXT) LIKE '$" + userInputSearch +
-          "%' OR CAST(book_quantity AS TEXT) LIKE '" + userInputSearch + "%';");
+      results =
+          tx.exec("SELECT * FROM books WHERE CAST(book_id AS TEXT) LIKE '%" +
+                  userInputSearch + "%' OR book_name LIKE '%" +
+                  userInputSearch + "%' OR book_author LIKE '%" +
+                  userInputSearch + "%' OR CAST(book_price AS TEXT) LIKE '$" +
+                  userInputSearch + "%' OR CAST(book_quantity AS TEXT) LIKE '" +
+                  userInputSearch + "%' ORDER BY book_id;");
 
       formatTable(results);
 
@@ -207,7 +208,7 @@ void Book::updateAllBooks() {
         updateAllBooksPrice(&cx);
         break;
       case 2:
-        updateAllBooksPrice(&cx);
+        updateAllBooksQuantity(&cx);
         break;
       default:
         isValidChoice = false;
@@ -224,7 +225,7 @@ void Book::updateAllBooks() {
           updateAllBooksPrice(&cx);
           break;
         case 2:
-          updateAllBooksPrice(&cx);
+          updateAllBooksQuantity(&cx);
           break;
         }
       };
@@ -234,6 +235,29 @@ void Book::updateAllBooks() {
 
     return;
   } catch (const std::exception e) {
+    std::cerr << e.what() << "\n";
+  }
+};
+
+void Book::updateBook() {
+  try {
+    pqxx::connection cx(databaseUrl);
+
+    if (cx.is_open()) {
+      system("clear");
+
+      int userInputChoice;
+      bool isValidChoice;
+
+      std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
+                << std::string(20, ' ') << "|\n\n";
+
+    } else {
+      std::cout << "Failed To Connect To Database!\n";
+    }
+
+    return;
+  } catch (const std::exception &e) {
     std::cerr << e.what() << "\n";
   }
 };
@@ -313,9 +337,42 @@ void Book::formatTable(pqxx::result results) {
 void Book::updateAllBooksPrice(pqxx::connection *inputConnection) {
   system("clear");
 
-  pqxx::work tx(*inputConnection);
+  std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
+            << std::string(20, ' ') << "|\n\n";
 
-  std::cout << tx.exec("SELECT * FROM books;").size();
+  pqxx::work tx(*inputConnection);
+  double inputPrice;
+
+  std::cout << "New Price: ";
+  std::cin >> inputPrice;
+
+  tx.exec("UPDATE books SET book_price = " + std::to_string(inputPrice) + ";");
 
   tx.commit();
+
+  system("clear");
+
+  return;
+};
+
+void Book::updateAllBooksQuantity(pqxx::connection *inputConnection) {
+  system("clear");
+
+  std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
+            << std::string(20, ' ') << "|\n\n";
+
+  pqxx::work tx(*inputConnection);
+  double inputQuantity;
+
+  std::cout << "New Quantity: ";
+  std::cin >> inputQuantity;
+
+  tx.exec("UPDATE books SET book_quantity = " + std::to_string(inputQuantity) +
+          ";");
+
+  tx.commit();
+
+  system("clear");
+
+  return;
 };
