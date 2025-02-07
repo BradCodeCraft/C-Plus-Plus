@@ -25,5 +25,7 @@ private:
   double bookPrice;
   int bookQuantity;
 
-  void formatTable(pqxx::result);
+  void formatTable(pqxx::result inputResult);
+  void updateAllBooksPrice(pqxx::connection *inputConnection);
+  void updateAllBooksQuantity(pqxx::connection *inputConnection);
 };

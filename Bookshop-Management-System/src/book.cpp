@@ -35,8 +35,7 @@ void Book::createBook() {
                 << std::string(20, ' ') << "|\n\n";
 
       pqxx::work tx(cx);
-      std::string bookPriceString;
-      std::string bookQuantityString;
+
       this->bookId = tx.exec("SELECT * FROM books;").size() + 1;
 
       std::cin.ignore();
@@ -47,12 +46,10 @@ void Book::createBook() {
       std::getline(std::cin, this->bookAuthor);
 
       std::cout << "Enter Book Price: ";
-      std::getline(std::cin, bookPriceString);
-      this->bookPrice = std::stod(bookPriceString);
+      std::cin >> this->bookPrice;
 
       std::cout << "Enter Book Quantity: ";
-      std::getline(std::cin, bookQuantityString);
-      this->bookQuantity = std::stoi(bookQuantityString);
+      std::cin >> this->bookQuantity;
 
       tx.exec("INSERT INTO books VALUES (" + std::to_string(this->bookId) +
               ", '" + this->bookName + "', '" + this->bookAuthor + "', " +
@@ -78,8 +75,8 @@ void Book::readAllBooks() {
                 << std::string(20, ' ') << "|\n\n";
 
       pqxx::work tx(cx);
-      pqxx::result results = tx.exec("SELECT * FROM books;");
-      std::string userInputChoice;
+      pqxx::result results = tx.exec("SELECT * FROM books ORDER BY book_id;");
+      int userInputChoice;
       bool isValidChoice;
 
       formatTable(results);
@@ -90,7 +87,7 @@ void Book::readAllBooks() {
       std::cout << "Choice: ";
       std::cin >> userInputChoice;
 
-      switch (std::stoi(userInputChoice)) {
+      switch (userInputChoice) {
       case 1:
         system("clear");
 
@@ -102,9 +99,9 @@ void Book::readAllBooks() {
           std::cout << "Invalid Option! Try again:";
           std::cin >> userInputChoice;
 
-          isValidChoice = std::stoi(userInputChoice) == 1;
+          isValidChoice = userInputChoice == 1;
         }
-        switch (std::stoi(userInputChoice)) {
+        switch (userInputChoice) {
         case 1:
           system("clear");
 
@@ -127,7 +124,7 @@ void Book::readBook() {
       system("clear");
 
       std::string userInputSearch;
-      std::string userInputChoice;
+      int userInputChoice;
       bool isValidChoice;
 
       std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
@@ -155,7 +152,7 @@ void Book::readBook() {
       std::cout << "Choice: ";
       std::cin >> userInputChoice;
 
-      switch (std::stoi(userInputChoice)) {
+      switch (userInputChoice) {
       case 1:
         system("clear");
 
@@ -167,9 +164,9 @@ void Book::readBook() {
           std::cout << "Invalid Option! Try again:";
           std::cin >> userInputChoice;
 
-          isValidChoice = std::stoi(userInputChoice) == 1;
+          isValidChoice = userInputChoice == 1;
         }
-        switch (std::stoi(userInputChoice)) {
+        switch (userInputChoice) {
         case 1:
           system("clear");
 
@@ -193,8 +190,7 @@ void Book::updateAllBooks() {
     if (cx.is_open()) {
       system("clear");
 
-      std::string userInputColumn;
-      std::string userInputChoice;
+      int userInputChoice;
       bool isValidChoice;
 
       std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
@@ -203,6 +199,35 @@ void Book::updateAllBooks() {
       std::cout << "Columns:\n"
                 << "  1.Price\n"
                 << "  2.Quantity\n\n";
+
+      std::cout << "Choice: ";
+      std::cin >> userInputChoice;
+      switch (userInputChoice) {
+      case 1:
+        updateAllBooksPrice(&cx);
+        break;
+      case 2:
+        updateAllBooksPrice(&cx);
+        break;
+      default:
+        isValidChoice = false;
+
+        while (!isValidChoice) {
+          std::cout << "\nInvalid Option! Try again: ";
+          std::cin >> userInputChoice;
+
+          isValidChoice = userInputChoice >= 1 && userInputChoice <= 2;
+        }
+
+        switch (userInputChoice) {
+        case 1:
+          updateAllBooksPrice(&cx);
+          break;
+        case 2:
+          updateAllBooksPrice(&cx);
+          break;
+        }
+      };
     } else {
       std::cout << "Failed To Connect To Database!\n";
     }
@@ -283,4 +308,14 @@ void Book::formatTable(pqxx::result results) {
 
     std::cout << "\n";
   }
+};
+
+void Book::updateAllBooksPrice(pqxx::connection *inputConnection) {
+  system("clear");
+
+  pqxx::work tx(*inputConnection);
+
+  std::cout << tx.exec("SELECT * FROM books;").size();
+
+  tx.commit();
 };

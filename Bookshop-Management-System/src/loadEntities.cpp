@@ -42,6 +42,7 @@ void loadBookEntity() {
     b.readBook();
     break;
   case 4:
+    b.updateAllBooks();
     break;
   case 5:
     break;
@@ -74,6 +75,7 @@ void loadBookEntity() {
       b.readBook();
       break;
     case 4:
+      b.updateAllBooks();
       break;
     case 5:
       break;
