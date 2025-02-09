@@ -2,12 +2,14 @@
 // |            IMPORTS              |
 // +---------------------------------+
 #include "../include/book.h"
+#include <chrono>
 #include <cstdlib>
 #include <exception>
 #include <iostream>
 #include <ostream>
 #include <pqxx/pqxx>
 #include <string>
+#include <thread>
 
 // +---------------------------------+
 // |         GLOBAL VARIABLE         |
@@ -252,6 +254,38 @@ void Book::updateBook() {
       std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
                 << std::string(20, ' ') << "|\n\n";
 
+      std::cout << "Options:\n"
+                << "  1. By Book ID\n"
+                << "  2. By Book Name\n\n";
+      std::cin >> userInputChoice;
+
+      switch (userInputChoice) {
+      case 1:
+        updateBookById(&cx);
+        break;
+      case 2:
+        updateBookByName(&cx);
+        break;
+      default:
+        isValidChoice = false;
+
+        while (!isValidChoice) {
+          std::cout << "\nInvalid Option! Try again: ";
+          std::cin >> userInputChoice;
+
+          isValidChoice = userInputChoice >= 1 && userInputChoice <= 2;
+        }
+
+        switch (userInputChoice) {
+        case 1:
+          updateBookById(&cx);
+          break;
+        case 2:
+          updateBookByName(&cx);
+          break;
+        }
+      }
+
     } else {
       std::cout << "Failed To Connect To Database!\n";
     }
@@ -376,3 +410,72 @@ void Book::updateAllBooksQuantity(pqxx::connection *inputConnection) {
 
   return;
 };
+
+// TODO: add third case: results.size() > 1 (else)
+void Book::updateBookById(pqxx::connection *inputConnection) {
+  system("clear");
+
+  std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
+            << std::string(20, ' ') << "|\n\n";
+
+  pqxx::work tx(*inputConnection);
+  pqxx::result results;
+  int inputBookId;
+  int userInputChoice;
+  bool isValidChoice;
+
+  std::cout << "Book ID: ";
+  std::cin >> inputBookId;
+
+  results = tx.exec("SELECT * FROM books WHERE book_id =" +
+                    std::to_string(inputBookId) + ";");
+
+  if (results.size() == 0) {
+    std::cout << "There are no books matched ID " << inputBookId << ".\n";
+  } else if (results.size() == 1) {
+    system("clear");
+
+    std::cout << "\n|" << std::string(20, ' ') << "The Book Nook"
+              << std::string(20, ' ') << "|\n\n";
+    formatTable(results);
+
+    std::cout << "\n Options:\n"
+              << "     1. Price\n"
+              << "     2. Quantity\n\n";
+
+    std::cout << "Choice: ";
+    std::cin >> userInputChoice;
+
+    switch (userInputChoice) {
+    case 1:
+      updateBookPrice(&results);
+      break;
+    case 2:
+      updateBookQuantity(&results);
+      break;
+    default:
+      isValidChoice = false;
+
+      while (!isValidChoice) {
+        std::cout << "Invalid Option! Try again: ";
+        std::cin >> userInputChoice;
+
+        isValidChoice = userInputChoice >= 1 && userInputChoice <= 2;
+      }
+
+      switch (userInputChoice) {
+      case 1:
+        updateBookPrice(&results);
+        break;
+      case 2:
+        updateBookQuantity(&results);
+        break;
+      }
+    }
+  }
+};
+
+void Book::updateBookByName(pqxx::connection *inputConnection) {}
+
+void Book::updateBookPrice(pqxx::result *inputResult) {};
+void Book::updateBookQuantity(pqxx::result *inputResult) {};

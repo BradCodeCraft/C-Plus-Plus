@@ -28,4 +28,8 @@ private:
   void formatTable(pqxx::result inputResult);
   void updateAllBooksPrice(pqxx::connection *inputConnection);
   void updateAllBooksQuantity(pqxx::connection *inputConnection);
+  void updateBookById(pqxx::connection *inputConnection);
+  void updateBookByName(pqxx::connection *inputConnection);
+  void updateBookPrice(pqxx::result *inputResult);
+  void updateBookQuantity(pqxx::result *inputResult);
 };
