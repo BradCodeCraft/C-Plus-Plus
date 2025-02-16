@@ -1,0 +1,6 @@
+/home/itsbradnguyen/Desktop/repositories/C-Plus-Plus/Library/out/build/CMakeFiles/Library.dir
+/home/itsbradnguyen/Desktop/repositories/C-Plus-Plus/Library/out/build/CMakeFiles/edit_cache.dir
+/home/itsbradnguyen/Desktop/repositories/C-Plus-Plus/Library/out/build/CMakeFiles/rebuild_cache.dir
+/home/itsbradnguyen/Desktop/repositories/C-Plus-Plus/Library/out/build/lib/Book/CMakeFiles/book.dir
+/home/itsbradnguyen/Desktop/repositories/C-Plus-Plus/Library/out/build/lib/Book/CMakeFiles/edit_cache.dir
+/home/itsbradnguyen/Desktop/repositories/C-Plus-Plus/Library/out/build/lib/Book/CMakeFiles/rebuild_cache.dir
